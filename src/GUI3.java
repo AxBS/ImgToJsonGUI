@@ -18,10 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -46,6 +43,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.json.JSONObject;
 import rsc.Intersection;
 import rsc.Segment;
 import rsc.Step;
@@ -281,7 +280,7 @@ public class GUI3 {
 		
 		public void paint(Graphics gi) {
 			
-			Stroke step = new BasicStroke(3);
+			Stroke step = new BasicStroke(2);
 			
 			Graphics2D g = (Graphics2D) gi;
 			//Paint background
@@ -300,9 +299,20 @@ public class GUI3 {
 			for(Step st: steps) {
 				g.setColor(Color.GREEN);
 				g.setStroke(step);
-				g.drawLine(st.getOriginX(), st.getOriginY(), st.getDestinationX(), st.getDestinationY());
-				g.setColor(Color.DARK_GRAY);
-				g.drawString(st.getSegment(),st.getDestinationX()+20, st.getDestinationY()+20);
+				Segment seg = null;
+				for(Segment s: segments){
+					if(s.getId().equals(st.getSegment()))
+						seg = s;
+				}
+				if(seg != null && seg.getDirection().equals("down")){
+					g.setColor(Color.ORANGE);
+					g.drawLine(st.getOriginX()-4, st.getOriginY(), st.getDestinationX()-4, st.getDestinationY());
+					g.drawString(st.getSegment(),st.getDestinationX()-13, st.getDestinationY()-13);
+				} else {
+					g.setColor(Color.GREEN);
+					g.drawLine(st.getOriginX(), st.getOriginY(), st.getDestinationX(), st.getDestinationY());
+					g.drawString(st.getSegment(),st.getDestinationX()+13, st.getDestinationY()+13);
+				}
 			}
 		}	
 	}
@@ -344,6 +354,7 @@ public class GUI3 {
 		JMenuItem open;
 		JMenuItem save ;
 		JMenuItem export ;
+		JMenuItem importar ;
 		JMenuItem exit;
 
 		
@@ -357,6 +368,7 @@ public class GUI3 {
 			newFile = new JMenuItem("Nuevo");
 			open = new JMenuItem("Abrir");
 			save = new JMenuItem("Guardar");
+			importar = new JMenuItem("Importar");
 			export = new JMenuItem("Exportar");
 			exit = new JMenuItem("Salir");
 			
@@ -375,6 +387,13 @@ public class GUI3 {
 			          System.exit(0);
 			        }
 			      });
+
+			importar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					importValues();
+				}
+			});
 			
 			export.addActionListener(new ActionListener() {
 			      public void actionPerformed(ActionEvent ev) {
@@ -405,6 +424,7 @@ public class GUI3 {
 			add(newFile);
 			add(open);
 			add(save);
+			add(importar);
 			add(export);
 			addSeparator();
 			add(exit);
@@ -1146,11 +1166,11 @@ public class GUI3 {
 					//Create Twin segment and its steps if necessary
 					if(segmentTwinBtn.isSelected()) {
 						
-						seg.setTwinSegments(seg.getId()+"-T");
+						seg.addTwinSegment(seg.getId()+"-T");
 						
 						Segment twin = new Segment();
 						twin.setId(seg.getId()+"-T");
-						twin.setTwinSegments(seg.getId());
+						twin.addTwinSegment(seg.getId());
 						twin.setOrigin(seg.getDestination());
 						twin.setDestination(seg.getOrigin());
 						twin.setLength(seg.getLength());
@@ -1368,7 +1388,7 @@ public class GUI3 {
 	      System.out.println("getSelectedFile() : " 
 	         +  chooser.getSelectedFile());
 	      
-	      directory = chooser.getSelectedFile().getAbsolutePath();
+	      directory = chooser.getCurrentDirectory().getAbsolutePath();
 	      importIntersections(directory);
 		  importSegments(directory);
 		  importSteps(directory);
@@ -1405,6 +1425,28 @@ public class GUI3 {
 			e.printStackTrace();
 		}
 	}
+
+	public void importProhibitions(String path){
+		File prohibitionsFile = new File(path+"/prohibitions.json");
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(prohibitionsFile));
+			String line = reader.readLine();
+			while (line != null){
+				JSONObject objAux = new JSONObject(line);
+				String intersectionId = objAux.getString("intersectionId");
+				for(Intersection i: intersections){
+					if(i.getId().compareTo(intersectionId) == 0){
+						i.prohibitionsFromJSon(line);
+					}
+				}
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	   		
@@ -1425,7 +1467,22 @@ public class GUI3 {
 	}
 	
 	public void importIntersections(String path) {
-		//TODO
+		File intersectionFile = new File(path+"/intersections.json");
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(intersectionFile));
+			String line = reader.readLine();
+			while (line != null){
+				Intersection inter = new Intersection();
+				inter.fromJSon(line);
+				intersections.add(inter);
+
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void exportSteps(String path) {
@@ -1445,7 +1502,22 @@ public class GUI3 {
 	}
 	
 	public void importSteps(String path) {
-		//TODO
+		File stepsFile = new File(path+"/steps.json");
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(stepsFile));
+			String line = reader.readLine();
+			while (line != null){
+				Step step = new Step();
+				step.fromJSon(line);
+				steps.add(step);
+
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -1467,12 +1539,32 @@ public class GUI3 {
 	}
 	
 	public void importSegments(String path) {
-		//TODO
+		File segmentsFile = new File(path+"/segments.json");
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(segmentsFile));
+			String line = reader.readLine();
+			while (line != null){
+				Segment segment = new Segment();
+				segment.fromJSon(line);
+				String intersectionOriginId = segment.getOrigin();
+				String intersectionDestinationId = segment.getDestination();
+				for(Intersection i: intersections){
+					if(i.getId().equals(intersectionOriginId)){
+						i.addOutSegment(segment);
+					}
+					if(i.getId().equals(intersectionDestinationId)){
+						i.addInSegment(segment);
+					}
+				}
+				segments.add(segment);
+
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
-	
-	
-	
-	
-	
+
 }

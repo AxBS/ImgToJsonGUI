@@ -4,6 +4,10 @@ package rsc;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import rsc.Segment;
 
 /**
@@ -50,7 +54,6 @@ public class Intersection implements Serializable{
 	 *              intersection.
 	 * @param  out  A list of {@link Segment} that leave this
 	 *              intersection.
-	 * @param coordinates A array with the coordinates.
 	 */
 	public Intersection(String id, ArrayList<Segment> in, 
 			            ArrayList<Segment> out, int x, int y) {
@@ -66,10 +69,6 @@ public class Intersection implements Serializable{
 	/**
 	 * Constructor. 
 	 *
-	 * @param  in   A list of {@link Segment} that go into this
-	 *              intersection.
-	 * @param  out  A list of {@link Segment} that leave this 
-	 *              intersection.
 	 * @param x A double with the x coordinate.
 	 * @param y A double with the y coordinate.
 	 */
@@ -140,7 +139,32 @@ public class Intersection implements Serializable{
 
 	public int getY() {
 		return y;
-	}	
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setIn(ArrayList<Segment> in) {
+		this.in = in;
+	}
+
+	public void setOut(ArrayList<Segment> out) {
+		this.out = out;
+	}
+
+	public void setProhibitions(HashMap<String, ArrayList<String>> prohibitions) {
+		this.prohibitions = prohibitions;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
 	@Override
 	public String toString() {
 		return "ID: "+ id + " X:"+ x + " Y:"+ y; //+ " Inputs:"+getInSegments().toString()+ " Outputs:" + getOutSegments().toString();
@@ -165,21 +189,39 @@ public class Intersection implements Serializable{
 
 		return "{\"id\":\""+id+"\",\"coordinates\":{\"x\":"+x+",\"y\":"+y+"}}";
 	}
+
+	public void fromJSon(String line) {
+		JSONObject intersectionJson = new JSONObject(line);
+		this.setId(intersectionJson.getString("id"));
+		this.setX(intersectionJson.getJSONObject("coordinates").getInt("x"));
+		this.setY(intersectionJson.getJSONObject("coordinates").getInt("y"));
+	}
 	
 	public String prohibitionstoJSon() {
 		String res = "";
 		
 		for(String input:prohibitions.keySet()) {
-			res+="{\"input\":\""+input+"\",\"outputs\":"+prohibitions.get(input).toString()+"}\n";
+			res+="{\"intersectionId\":\""+id+"\",\"input\":\""+input+"\",\"outputs\":"+prohibitions.get(input).toString()+"}\n";
 		}
 
 		return res;
 		
 	}
-	
-	public void fromJSon(String line) {
-		
+
+	public void prohibitionsFromJSon(String line){
+		JSONObject prohibition = new JSONObject(line);
+		String intersectionId = prohibition.getString("intersectionId");
+		if(intersectionId.compareTo(this.getId()) == 0){
+			String input = prohibition.getString("input");
+			JSONArray outputs = prohibition.getJSONArray("output");
+			for (int i = 0; i < outputs.length(); i++){
+				this.prohibitions.get(input).add((String)outputs.get(i));
+			}
+		} else {
+			System.out.println("Las prohibiciones no están en la intersección correcta");
+		}
 	}
+
 	
 	
 }

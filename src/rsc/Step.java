@@ -1,5 +1,7 @@
 package rsc;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -106,7 +108,13 @@ public class Step implements Serializable {
 	}
 	
 	public void fromJSon(String line) {
-		
+		JSONObject stepJson = new JSONObject(line);
+		this.setId(stepJson.getString("id"));
+		this.setSegment(stepJson.getString("idSegment"));
+		this.setOriginX(stepJson.getJSONObject("originCoordinates").getInt("x"));
+		this.setDestinationX(stepJson.getJSONObject("destinationCoordinates").getInt("x"));
+		this.setOriginY(stepJson.getJSONObject("originCoordinates").getInt("y"));
+		this.setDestinationY(stepJson.getJSONObject("destinationCoordinates").getInt("y"));
 	}
 	
 }

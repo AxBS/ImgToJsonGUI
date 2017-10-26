@@ -1,7 +1,11 @@
 package rsc;
 
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 //import agents.SegmentAgent;
@@ -48,7 +52,7 @@ public class Segment implements Serializable{
 	private String direction;
 
 	//List with the twins segments
-	private String twinSegments;
+	private ArrayList<String> twinSegments;
 	
 	//List of Steps
 	private List<Step> steps;
@@ -69,7 +73,7 @@ public class Segment implements Serializable{
 		this.maxSpeed = "";
 		this.pkIni = "";
 		this.direction = "";
-		this.twinSegments = "";
+		this.twinSegments = new ArrayList<String>();
 
 	}
 
@@ -82,7 +86,7 @@ public class Segment implements Serializable{
 	 */
 	public Segment(String id, String origin, String destination, 
 			String length, String maxSpeed, String capacity, String density, 
-			String numberTracks, String direction, String pkstart, String segTwinsList){
+			String numberTracks, String direction, String pkstart, ArrayList<String> segTwinsList){
 
 		this.id = id;
 		this.origin = origin;
@@ -153,7 +157,7 @@ public class Segment implements Serializable{
 		this.density = density;
 	}
 	
-	public String getTwinSegments() {
+	public ArrayList<String> getTwinSegments() {
 		return twinSegments;
 	}
 
@@ -197,8 +201,12 @@ public class Segment implements Serializable{
 		this.pkIni = pkIni;
 	}
 
-	public void setTwinSegments(String twinSegments) {
+	public void setTwinSegments(ArrayList<String> twinSegments) {
 		this.twinSegments = twinSegments;
+	}
+
+	public void addTwinSegment(String twinSegment) {
+		this.twinSegments.add(twinSegment);
 	}
 
 	@Override
@@ -216,7 +224,22 @@ public class Segment implements Serializable{
 	}
 	
 	public void fromJSon(String line) {
-		
+		JSONObject segmentJson = new JSONObject(line);
+		this.setId(segmentJson.getString("id"));
+		this.setOrigin(segmentJson.getString("origin"));
+		this.setDestination(segmentJson.getString("destination"));
+		this.setLength(segmentJson.getString("length"));
+		this.setMaxSpeed(segmentJson.getString("maxSpeed"));
+		this.setCapacity(segmentJson.getString("capacity"));
+		this.setDensity(segmentJson.getString("density"));
+		this.setNumberTracks(segmentJson.getString("numberTracks"));
+
+		JSONArray segTwinsJSON = segmentJson.getJSONArray("twins");
+		for (int i = 0; i < segTwinsJSON.length(); i++){
+			this.addTwinSegment((String)segTwinsJSON.get(i));
+		}
+		this.setDirection(segmentJson.getString("direction"));
+		this.setPkIni(segmentJson.getString("pkstart"));
 	}
 	
 }
