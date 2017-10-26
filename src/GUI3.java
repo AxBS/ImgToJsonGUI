@@ -1163,9 +1163,9 @@ public class GUI3 {
 							twin.setDirection("down");
 						else twin.setDirection("up");
 						
-						int start = Integer.parseInt(seg.getPkIni());
-						int length = Integer.parseInt(seg.getLength());
-						String pkIniTwin = Integer.toString(start+length);
+						float start = Float.parseFloat(seg.getPkIni());
+						float length = Float.parseFloat(seg.getLength());
+						String pkIniTwin = Float.toString(start+length);
 						
 						twin.setPkIni(pkIniTwin);
 						
