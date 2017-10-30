@@ -1,10 +1,8 @@
 package rsc;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -81,7 +79,17 @@ public class Intersection implements Serializable{
 		this.x = x;
 		this.y = y;
 	}
-	
+
+	/** Contructor
+	 * @param id - String que representa el id de la intersección
+	 * @param in - Lista de Segmentos ({@link Segment}) de entrada a la intersección. Es decir estos segmentos tienen como destino la
+	 *           intersección sobre la que trabajamos
+	 * @param out - Lista de Segmentos ({@link Segment}) de salida a la intersección. Es decir estos segmentos tienen como origen la
+	 *            intersección sobre la que trabajamos
+	 * @param prohibitions - Mapa cuya clave es el id del segmento de entrada y el valor es una lista de id de segmentos de salida a
+	 *                     los que no podremos ir. El ejemplo con carreteras es como una dirección no permitida
+	 * @param x - Integer con la coordenada x de esta intersección
+	 * @param y - Integer con la coordenada y de esta intersección*/
 	public Intersection(String id, ArrayList<Segment> in, 
             ArrayList<Segment> out,HashMap<String, ArrayList<String>> prohibitions, int x, int y) {
 
@@ -92,10 +100,7 @@ public class Intersection implements Serializable{
 		this.x = x;
 		this.y = y;
 	}
-	
-	
-	
-	
+
 	/**
 	 * Adds an in {@link Segment} to the Intersection. 
 	 *
@@ -120,47 +125,68 @@ public class Intersection implements Serializable{
 		return this.out.add(segment);
 	}
 
-	//Setters and getters
+	/** Getter del id de la intersección
+	 * @return String con el valor del id de la intersección*/
 	public String getId() {
 		return id;
 	}
 
+	/**Getter de la lista de Segmentos de entrada de la intersección
+	 * @return ArrayList de segmentos de entrada*/
 	public ArrayList<Segment> getInSegments() {
 		return in;
 	}
 
+	/**Getter de la lista de Segmentos de salida de la intersección
+	 * @return ArrayList de los segmentos de salida de la intersección*/
 	public ArrayList<Segment> getOutSegments() {
 		return out;
 	}
 
+	/** Getter de la coordenada X de la intersección
+	 * @return Integer que representa la coodenada x de la intersección*/
 	public int getX() {
 		return x;
 	}
 
+	/** Getter de la coordenada Y de la intersección
+	 * @return Integet que representa la coordenada y de la intersección*/
 	public int getY() {
 		return y;
 	}
 
+	/**Setter del id de la intersección
+	 * @param id - String que representa el identificador de la intersección*/
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/** Setter de la lista de Segmentos de entrada a la intersección
+	 * @param in - ArrayList de segmentos de entrada a la interseción*/
 	public void setIn(ArrayList<Segment> in) {
 		this.in = in;
 	}
 
+	/**Setter de la lista de Segmentos de salida a la intersección
+	 * @param out - ArrayLisat de segmentos de salida de la intersección*/
 	public void setOut(ArrayList<Segment> out) {
 		this.out = out;
 	}
 
+	/**Setter de la lista de prohibiciones de la intersección
+	 * @param prohibitions - Mapa de id del segmento de entrada, valor - lista de segmentos de salida no permitidos*/
 	public void setProhibitions(HashMap<String, ArrayList<String>> prohibitions) {
 		this.prohibitions = prohibitions;
 	}
 
+	/** Setter de la coordenada x de la intersección
+	 * @param x - Integer de la coordenada x de la intersección*/
 	public void setX(int x) {
 		this.x = x;
 	}
 
+	/** Setter de la coordenada Y de la intersección
+	 * @param y - Integer de la  coordenada Y de la interswcción*/
 	public void setY(int y) {
 		this.y = y;
 	}

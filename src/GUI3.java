@@ -20,6 +20,7 @@ import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -49,7 +50,7 @@ import rsc.Step;
 
 /**
  * Documentación siguiendeo la estructura explicada en https://en.wikipedia.org/wiki/Javadoc
- * @author Alex y David Albalate (dalbalat@uji.es)
+ * @author Alex Beltran (sist@uji.es) y David Albalate (dalbalat@uji.es)
  * @version 1.0
  * */
 public class GUI3 {
@@ -1271,7 +1272,8 @@ public class GUI3 {
 								
 							}
 						}
-						
+						/*TODO: Aquí se hace el reverso del twin. Hay que asegurarse de que esto funciona*/
+						Collections.reverse(twinSteps);
 						for(Step t : twinSteps) {
 							steps.add(t);
 						}
