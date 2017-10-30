@@ -1,0 +1,6 @@
+{"id":"ST-0","idSegment":"s1","originCoordinates":{"x":467,"y":573},"destinationCoordinates":{"x":453,"y":350}}
+{"id":"ST-1","idSegment":"s1-T","originCoordinates":{"x":453,"y":350},"destinationCoordinates":{"x":467,"y":573}}
+{"id":"ST-2","idSegment":"s2","originCoordinates":{"x":453,"y":350},"destinationCoordinates":{"x":431,"y":166}}
+{"id":"ST-3","idSegment":"s2-T","originCoordinates":{"x":431,"y":166},"destinationCoordinates":{"x":453,"y":350}}
+{"id":"ST-4","idSegment":"s3","originCoordinates":{"x":467,"y":573},"destinationCoordinates":{"x":678,"y":318}}
+{"id":"ST-5","idSegment":"s3-T","originCoordinates":{"x":678,"y":318},"destinationCoordinates":{"x":467,"y":573}}

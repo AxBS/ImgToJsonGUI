@@ -219,8 +219,21 @@ public class Segment implements Serializable{
 	public String toJSon() {
 		
 		// {"id":"S-A1-1","origin":"I-A1-0","destination":"I-A1-1","length":"15","maxSpeed":"120","capacity":"3800","density":"0","numberTracks":"2", "twins":["S-A1-6"], "direction":"up", "pkstart": "0"}
+		JSONObject segmentJson = new JSONObject();
+		segmentJson.put("id", id);
+		segmentJson.put("origin",origin);
+		segmentJson.put("destination", destination);
+		segmentJson.put("length", length);
+		segmentJson.put("maxSpeed", maxSpeed);
+		segmentJson.put("capacity", capacity);
+		segmentJson.put("density", density);
+		segmentJson.put("numberTracks", numberTracks);
+		segmentJson.put("twins", twinSegments);
+		segmentJson.put("direction", direction);
+		segmentJson.put("pkstart", pkIni);
 
-		return "{\"id\":\""+id+"\",\"origin\":\""+origin+"\",\"destination\":\""+destination+"\",\"length\":\""+length+"\"\",\"maxSpeed\":\""+120+"\",\"capacity\":\""+capacity+"\",\"density\":\""+density+"\",\"numberTracks\":\""+numberTracks+"\", \"twins\":[\""+twinSegments+"\"], \"direction\":\""+direction+"\", \"pkstart\": \""+pkIni+"\"}";
+		//return "{\"id\":\""+id+"\",\"origin\":\""+origin+"\",\"destination\":\""+destination+"\",\"length\":\""+length+"\",\"maxSpeed\":\""+120+"\",\"capacity\":\""+capacity+"\",\"density\":\""+density+"\",\"numberTracks\":\""+numberTracks+"\", \"twins\":[\""+twinSegments+"\"], \"direction\":\""+direction+"\", \"pkstart\": \""+pkIni+"\"}";
+		return segmentJson.toString();
 	}
 	
 	public void fromJSon(String line) {
