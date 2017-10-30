@@ -1,6 +1,0 @@
-{"twins":["s1-T"],"density":"0","origin":"i1","destination":"i2","length":"5","id":"s1","maxSpeed":"120","numberTracks":"2","pkstart":"0","capacity":"3000","direction":"up"}
-{"twins":["s1"],"density":"0","origin":"i2","destination":"i1","length":"5","id":"s1-T","maxSpeed":"120","numberTracks":"2","pkstart":"5.0","capacity":"3000","direction":"down"}
-{"twins":["s2-T"],"density":"0","origin":"i2","destination":"i3","length":"5","id":"s2","maxSpeed":"120","numberTracks":"2","pkstart":"5","capacity":"3800","direction":"up"}
-{"twins":["s2"],"density":"0","origin":"i3","destination":"i2","length":"5","id":"s2-T","maxSpeed":"120","numberTracks":"2","pkstart":"10.0","capacity":"3800","direction":"down"}
-{"twins":["s3-T"],"density":"0","origin":"i1","destination":"i4","length":"5","id":"s3","maxSpeed":"120","numberTracks":"2","pkstart":"0","capacity":"3800","direction":"up"}
-{"twins":["s3"],"density":"0","origin":"i4","destination":"i1","length":"5","id":"s3-T","maxSpeed":"120","numberTracks":"2","pkstart":"5.0","capacity":"3800","direction":"down"}

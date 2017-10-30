@@ -1,5 +1,3 @@
-
-
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -49,39 +47,70 @@ import rsc.Intersection;
 import rsc.Segment;
 import rsc.Step;
 
-
+/**
+ * Documentación siguiendeo la estructura explicada en https://en.wikipedia.org/wiki/Javadoc
+ * @author Alex y David Albalate (dalbalat@uji.es)
+ * @version 1.0
+ * */
 public class GUI3 {
-	
-	
-	//APP MODE
+	/**
+	 * Modo inicial del programa
+	 * */
 	String mode = "intersection"; // intersection - segment 
 	
 	//Components
-	String message = new String(); 		//Messaging
-	BufferedImage mapImage;				//Background Map
+	/**Messaging*/
+	String message = new String();
+	/**Background Map*/
+	BufferedImage mapImage;
 	BufferedImage mapImageINI;
-	mapPanel map = new mapPanel();		//Panel containing the Map
-	JFrame mapFrame = new JFrame();		//Frame containing the app
-	JMenuBar menuBar = new JMenuBar();	//App MenuBar
-	menu menu = new menu();				//A menu contained in the MenuBar for App options
-	modeMenu modeMenu = new modeMenu();  //Menu that determines the MODE in which we operate
-	
-	// Global variables 
-	int xMargin = 15; 					//Area in which we consider we are clicking a user
-	int yMargin = 15;					// created object.
-	int stepIdCounter = 00;				//IDs int used in step automating naming
+	/**Panel containing the Map*/
+	mapPanel map = new mapPanel();
+	/**Frame containing the app*/
+	JFrame mapFrame = new JFrame();
+	/** App MenuBar*/
+	JMenuBar menuBar = new JMenuBar();
+	/** A menu contained in the MenuBar for App options*/
+	menu menu = new menu();
+	/** Menu that determines the MODE in which we operate */
+	modeMenu modeMenu = new modeMenu();
+	/** Global variables*/
+	/**Area in which we consider we are clicking a user created object.*/
+	int xMargin = 15;
+	int yMargin = 15;
+	/**IDs int used in step automating naming*/
+	int stepIdCounter = 00;
 	int stepTwinIdCounter = 01;
-	
+
+	/**
+	 * Lista de intersecciones generales del sistema
+	 * */
 	ArrayList<Intersection> intersections = new ArrayList<Intersection>();
+	/**
+	 * Lista de segmentos generales del sistema
+	 * */
 	ArrayList<Segment> segments = new ArrayList<Segment>();
+	/**
+	 * Lista de steps generales del sistema. Entendiendo step como parte de un segmento
+	 * con una dirección fija permitiendo así crear segmentos no rectos
+	 * */
 	ArrayList<Step> steps = new ArrayList<Step>();
 
+	/**
+	 * Método principal del programa
+	 * <p>
+	 *     Este método carga el GUI que a su vez carga las
+	 *     ventanas y demás elementos necesarios para la
+	 *     ejecución del proyecto
+	 * </p>
+	 * */
 	public static void main(String[] srgs) {
-
 		new GUI3();
-
 	}
 
+	/**
+	 * Ejecuta el método init de la clase interna init utilizando un hilo
+	 * */
 	public GUI3() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -1537,7 +1566,10 @@ public class GUI3 {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * @param path - El path de la carpeta de donde cogera los segmentos
+	 * */
 	public void importSegments(String path) {
 		File segmentsFile = new File(path+"/segments.json");
 		BufferedReader reader = null;
