@@ -135,7 +135,6 @@ public class Step implements Serializable {
 				+ ") , destinationXY=" + destinationX + "," + destinationY + ")]";
 	}
 
-	//TODO:Comprobar que al exportar e importar los steps esto funciona
 	/** Método para trasformar el objeto a un formato JSON
 	 * @return Un String en formato JSON que representa el Step, utilizado a la hora de exportar estos elementos*/
 	public String toJSon() {

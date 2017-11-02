@@ -107,13 +107,18 @@ public class GUI3 {
 		});
 	}
 
+	/**Clase interna init*/
 	public class init {
 
+		/**Método responsable de cargar los diferentes elementos  inicializados en el inicio al frame*/
 		public init() {
 			
 			menuBar.add(menu);
 			menuBar.add(modeMenu);
 			mapFrame.setJMenuBar(menuBar);
+			mapFrame.setTitle("Image To Json GUI");
+			ImageIcon img = new ImageIcon("data/icon.jpg");
+			mapFrame.setIconImage(img.getImage());
 			mapFrame.add(map);
 			
 
@@ -133,11 +138,14 @@ public class GUI3 {
 		}
 	}
 
+	/**Contiene el mápa y es el encargado de recoger los datos del ráton, crealos elementos básicos que
+	 * después serán mostrados en el mapa y lanza las otras ventanas*/
 	public class mapPanel extends JPanel {
 
 		private static final long serialVersionUID = 1L;
-		
-		boolean activeSegment = false;		// Stores whether a segment has been initiated or not
+
+		/**Stores whether a segment has been initiated or not*/
+		boolean activeSegment = false;
 		Segment seg = new Segment();			// Empty segment to store data until we save it on our array
 		Step step = new Step();				// Empty step to store data until we save it on our array
 		
@@ -284,15 +292,7 @@ public class GUI3 {
 			});
 		}
 
-
-		public void paint(Point p,Color c) {
-			Graphics2D g2d = mapImage.createGraphics();
-			g2d.setColor(c);
-			g2d.fillOval(p.x - 4, p.y - 4, 8, 8);
-			g2d.dispose();
-		}
-
-		
+		/**Método encargado de pintar los elementos del mapa llamado a través del método repaint()*/
 		public void paint(Graphics gi) {
 			
 			Stroke step = new BasicStroke(2);
@@ -361,28 +361,23 @@ public class GUI3 {
 		return origImage;
 	}
 
+	/**Clase menu con las opciones( Nuevo, Abrir, Exportar, Importar y Salir )*/
 	public class menu extends JMenu{
 		
 		private static final long serialVersionUID = 1L;
 		
 		JMenuItem newFile;
 		JMenuItem open;
-		JMenuItem save ;
 		JMenuItem export ;
 		JMenuItem importar ;
 		JMenuItem exit;
-
 		
 		public menu() {
-
-			
 			//Building the menu
 			setText("Menu");
-			
-			
+
 			newFile = new JMenuItem("Nuevo");
 			open = new JMenuItem("Abrir");
-			save = new JMenuItem("Guardar");
 			importar = new JMenuItem("Importar");
 			export = new JMenuItem("Exportar");
 			exit = new JMenuItem("Salir");
@@ -411,46 +406,27 @@ public class GUI3 {
 			});
 			
 			export.addActionListener(new ActionListener() {
-			      public void actionPerformed(ActionEvent ev) {
-			          
-			          export();
- 
-			        }
-			      });
-			save.addActionListener(new ActionListener() {
-			      public void actionPerformed(ActionEvent ev) {
-			          
-			    	  //Serialize object GUI3
-			    	  		
-			          
-			          
-			        }
+			      public void actionPerformed(ActionEvent ev) {export();}
 			      });
 			
 			open.addActionListener(new ActionListener() {
 			      public void actionPerformed(ActionEvent ev) {
 			    	  	//FileChooser to browse the directory to load
-
 			    	  	importValues();
-			    	  
 			        }
 			      });
 			
 			add(newFile);
 			add(open);
-			add(save);
 			add(importar);
 			add(export);
 			addSeparator();
 			add(exit);
 		}
-		
-		
-		public Dimension getImageSize() {
-			return mapImage == null ? new Dimension(600, 600) : new Dimension(mapImage.getWidth(), mapImage.getHeight());
-		}
+
 	}
-	
+
+	/**Menu modo para añadir Intersecciones o Segmentos*/
 	public class modeMenu extends JMenu{
 		
 		private static final long serialVersionUID = 1L;
@@ -486,22 +462,20 @@ public class GUI3 {
 			    	  	intersection.setSelected(false);
 			        }
 			      });
-			
-			
+
 			add(intersection);
 			add(segment);
-
 
 		}
 		
 	}
-	
+
+	/**Ventana para rellenar la intersección*/
 	public class intersectionFrame extends JFrame {
 
 		private static final long serialVersionUID = 1L;
 		private JPanel contentPane;
 		private JTextField nameText;
-
 
 		/**
 		 * Create the frame.
@@ -946,7 +920,7 @@ public class GUI3 {
 			
 			segmentNameText = new JTextField();
 			segmentNameText.setHorizontalAlignment(SwingConstants.CENTER);
-			segmentNameText.setForeground(Color.LIGHT_GRAY);
+			segmentNameText.setForeground(Color.BLACK);
 			GridBagConstraints gbc_segmentNameText = new GridBagConstraints();
 			gbc_segmentNameText.insets = new Insets(0, 0, 5, 5);
 			gbc_segmentNameText.fill = GridBagConstraints.HORIZONTAL;
@@ -1008,7 +982,7 @@ public class GUI3 {
 			
 			segmentLenthText = new JTextField();
 			segmentLenthText.setHorizontalAlignment(SwingConstants.CENTER);
-			segmentLenthText.setForeground(Color.LIGHT_GRAY);
+			segmentLenthText.setForeground(Color.BLACK);
 			GridBagConstraints gbc_segmentLenthText = new GridBagConstraints();
 			gbc_segmentLenthText.insets = new Insets(0, 0, 5, 5);
 			gbc_segmentLenthText.fill = GridBagConstraints.HORIZONTAL;
@@ -1025,7 +999,8 @@ public class GUI3 {
 			contentPane.add(lblVmx, gbc_lblVmx);
 			
 			segmentMaxSpeedText = new JTextField();
-			segmentMaxSpeedText.setForeground(Color.LIGHT_GRAY);
+			segmentMaxSpeedText.setForeground(Color.BLACK);
+			segmentMaxSpeedText.setText("120");
 			segmentMaxSpeedText.setHorizontalAlignment(SwingConstants.CENTER);
 			GridBagConstraints gbc_segmentMaxSpeedText = new GridBagConstraints();
 			gbc_segmentMaxSpeedText.insets = new Insets(0, 0, 5, 5);
@@ -1044,6 +1019,7 @@ public class GUI3 {
 			
 			segmentCapacityText = new JTextField();
 			segmentCapacityText.setHorizontalAlignment(SwingConstants.CENTER);
+			segmentCapacityText.setText("2200");
 			GridBagConstraints gbc_segmentCapacityText = new GridBagConstraints();
 			gbc_segmentCapacityText.insets = new Insets(0, 0, 5, 5);
 			gbc_segmentCapacityText.fill = GridBagConstraints.HORIZONTAL;
@@ -1061,6 +1037,7 @@ public class GUI3 {
 			
 			segmentDensityText = new JTextField();
 			segmentDensityText.setHorizontalAlignment(SwingConstants.CENTER);
+			segmentDensityText.setText("0");
 			GridBagConstraints gbc_segmentDensityText = new GridBagConstraints();
 			gbc_segmentDensityText.insets = new Insets(0, 0, 5, 5);
 			gbc_segmentDensityText.fill = GridBagConstraints.HORIZONTAL;
@@ -1078,6 +1055,7 @@ public class GUI3 {
 			
 			segmentNumTracksText = new JTextField();
 			segmentNumTracksText.setHorizontalAlignment(SwingConstants.CENTER);
+			segmentNumTracksText.setText("2");
 			GridBagConstraints gbc_segmentNumTracksText = new GridBagConstraints();
 			gbc_segmentNumTracksText.insets = new Insets(0, 0, 5, 5);
 			gbc_segmentNumTracksText.fill = GridBagConstraints.HORIZONTAL;
@@ -1127,7 +1105,7 @@ public class GUI3 {
 			GridBagConstraints gbc_segmentDownButton = new GridBagConstraints();
 			gbc_segmentDownButton.insets = new Insets(0, 0, 5, 5);
 			gbc_segmentDownButton.fill = GridBagConstraints.HORIZONTAL;
-			gbc_segmentDownButton.gridx = 6;
+			gbc_segmentDownButton.gridx = 4;
 			gbc_segmentDownButton.gridy = 13;
 			contentPane.add(downButton, gbc_segmentDownButton);
 
@@ -1201,7 +1179,7 @@ public class GUI3 {
 			cancelSegmentBtn.setForeground(Color.RED);
 			GridBagConstraints gbc_cancelSegmentBtn = new GridBagConstraints();
 			gbc_cancelSegmentBtn.insets = new Insets(0, 0, 5, 5);
-			gbc_cancelSegmentBtn.gridx = 3;
+			gbc_cancelSegmentBtn.gridx = 2;
 			gbc_cancelSegmentBtn.gridy = 16;
 			contentPane.add(cancelSegmentBtn, gbc_cancelSegmentBtn);
 			
@@ -1347,7 +1325,7 @@ public class GUI3 {
 			acceptSegmentBtn.setForeground(Color.BLUE);
 			GridBagConstraints gbc_acceptSegmentBtn = new GridBagConstraints();
 			gbc_acceptSegmentBtn.insets = new Insets(0, 0, 5, 0);
-			gbc_acceptSegmentBtn.gridx = 5;
+			gbc_acceptSegmentBtn.gridx = 4;
 			gbc_acceptSegmentBtn.gridy = 16;
 			contentPane.add(acceptSegmentBtn, gbc_acceptSegmentBtn);
 		}
