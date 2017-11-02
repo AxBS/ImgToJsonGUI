@@ -1400,7 +1400,8 @@ public class GUI3 {
 		  
 		  //Saving image
 		  BufferedImage bi = mapImage;
-		  File outputfile = new File(directory+"/ESCENARIO_SIN_NOMBRE.png");
+		  //Nombre que se le pone a la imagen del mapa
+		  File outputfile = new File(directory+"/red.png");
 		  try {
 			ImageIO.write(bi, "png", outputfile);
 		} catch (IOException e) {
