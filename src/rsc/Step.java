@@ -153,7 +153,7 @@ public class Step implements Serializable {
 		destinationCoodinates.put("x", this.getDestinationX());
 		destinationCoodinates.put("y", this.getDestinationY());
 
-		stepJson.put("destinationCoordinates", originCoordinates);
+		stepJson.put("destinationCoordinates", destinationCoodinates);
 		// "{\"id\":\""ST-001","idSegment":"S-A1-1","originCoordinates":{"x":82,"y":566},"destinationCoordinates":{"x":208,"y":431}}
 
 		//return "{\"id\":\""+id+"\",\"idSegment\":\""+segment+"\",\"originCoordinates\":{\"x\":"+originX+",\"y\":"+originY+"},\"destinationCoordinates\":{\"x\":"+destinationX+",\"y\":"+destinationY+"}}";

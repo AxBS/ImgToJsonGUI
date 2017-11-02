@@ -21,25 +21,10 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -924,6 +909,7 @@ public class GUI3 {
 		private JTextField segmentNumTracksText;
 		private JTextField segmentDirection;
 		private JTextField segmentPkIniText;
+		private JTextField segmentRoadCodeText;
 
 		/**
 		 * Create the frame.
@@ -1120,8 +1106,32 @@ public class GUI3 {
 			gbc_lblDireccin.gridx = 1;
 			gbc_lblDireccin.gridy = 13;
 			contentPane.add(lblDireccin, gbc_lblDireccin);
-			
-			segmentDirection = new JTextField();
+
+			JRadioButton upButton = new JRadioButton("up");
+			upButton.setSelected(true);
+
+			JRadioButton downButton = new JRadioButton("down");
+
+			//Group the radio buttons.
+			ButtonGroup buttonDirectionGroup = new ButtonGroup();
+			buttonDirectionGroup.add(upButton);
+			buttonDirectionGroup.add(downButton);
+
+			GridBagConstraints gbc_segmentUpButton = new GridBagConstraints();
+			gbc_segmentUpButton.insets = new Insets(0, 0, 5, 5);
+			gbc_segmentUpButton.fill = GridBagConstraints.HORIZONTAL;
+			gbc_segmentUpButton.gridx = 3;
+			gbc_segmentUpButton.gridy = 13;
+			contentPane.add(upButton, gbc_segmentUpButton);
+
+			GridBagConstraints gbc_segmentDownButton = new GridBagConstraints();
+			gbc_segmentDownButton.insets = new Insets(0, 0, 5, 5);
+			gbc_segmentDownButton.fill = GridBagConstraints.HORIZONTAL;
+			gbc_segmentDownButton.gridx = 6;
+			gbc_segmentDownButton.gridy = 13;
+			contentPane.add(downButton, gbc_segmentDownButton);
+
+			/*segmentDirection = new JTextField();
 			segmentDirection.setHorizontalAlignment(SwingConstants.CENTER);
 			GridBagConstraints gbc_segmentDierection = new GridBagConstraints();
 			gbc_segmentDierection.insets = new Insets(0, 0, 5, 5);
@@ -1129,7 +1139,7 @@ public class GUI3 {
 			gbc_segmentDierection.gridx = 3;
 			gbc_segmentDierection.gridy = 13;
 			contentPane.add(segmentDirection, gbc_segmentDierection);
-			segmentDirection.setColumns(10);
+			segmentDirection.setColumns(10);*/
 			
 			JLabel lblPkInicio = new JLabel("PK Inicio:");
 			GridBagConstraints gbc_lblPkInicio = new GridBagConstraints();
@@ -1147,6 +1157,23 @@ public class GUI3 {
 			gbc_segmentPkIniText.gridy = 14;
 			contentPane.add(segmentPkIniText, gbc_segmentPkIniText);
 			segmentPkIniText.setColumns(10);
+
+			JLabel lblRoadCode = new JLabel("Road Code:");
+			GridBagConstraints gbc_lblRoadCode = new GridBagConstraints();
+			gbc_lblRoadCode.insets = new Insets(0, 0, 5, 5);
+			gbc_lblRoadCode.gridx = 1;
+			gbc_lblRoadCode.gridy = 15;
+			contentPane.add(lblRoadCode, gbc_lblRoadCode);
+
+			segmentRoadCodeText = new JTextField();
+			segmentRoadCodeText.setHorizontalAlignment(SwingConstants.CENTER);
+			GridBagConstraints gbc_lblRoadCodeText = new GridBagConstraints();
+			gbc_lblRoadCodeText.insets = new Insets(0, 0, 5, 5);
+			gbc_lblRoadCodeText.fill = GridBagConstraints.HORIZONTAL;
+			gbc_lblRoadCodeText.gridx = 3;
+			gbc_lblRoadCodeText.gridy = 15;
+			contentPane.add(segmentRoadCodeText, gbc_lblRoadCodeText);
+			segmentRoadCodeText.setColumns(10);
 			
 			JButton cancelSegmentBtn = new JButton("Cancelar");
 			cancelSegmentBtn.addActionListener(new ActionListener() {
@@ -1175,7 +1202,7 @@ public class GUI3 {
 			GridBagConstraints gbc_cancelSegmentBtn = new GridBagConstraints();
 			gbc_cancelSegmentBtn.insets = new Insets(0, 0, 5, 5);
 			gbc_cancelSegmentBtn.gridx = 3;
-			gbc_cancelSegmentBtn.gridy = 15;
+			gbc_cancelSegmentBtn.gridy = 16;
 			contentPane.add(cancelSegmentBtn, gbc_cancelSegmentBtn);
 			
 			JButton acceptSegmentBtn = new JButton("Aceptar");
@@ -1190,8 +1217,17 @@ public class GUI3 {
 					seg.setCapacity(segmentCapacityText.getText());
 					seg.setDensity(segmentDensityText.getText());
 					seg.setNumberTracks(segmentNumTracksText.getText());
-					seg.setDirection(segmentDirection.getText());
+
+					for (Enumeration<AbstractButton> buttons = buttonDirectionGroup.getElements(); buttons.hasMoreElements();) {
+						AbstractButton button = buttons.nextElement();
+
+						if (button.isSelected()) {
+							System.out.println("Boton seleccionado - " + button.getText());
+							seg.setDirection(button.getText());
+						}
+					}
 					seg.setPkIni(segmentPkIniText.getText());
+					seg.setRoadCode(segmentRoadCodeText.getText());
 					
 					//Create Twin segment and its steps if necessary
 					if(segmentTwinBtn.isSelected()) {
@@ -1208,7 +1244,7 @@ public class GUI3 {
 						twin.setCapacity(seg.getCapacity());
 						twin.setDensity(seg.getDensity());
 						twin.setNumberTracks(seg.getNumberTracks());
-						
+						twin.setRoadCode(seg.getRoadCode());
 						if(seg.getDirection().equals("up"))
 							twin.setDirection("down");
 						else twin.setDirection("up");
@@ -1312,7 +1348,7 @@ public class GUI3 {
 			GridBagConstraints gbc_acceptSegmentBtn = new GridBagConstraints();
 			gbc_acceptSegmentBtn.insets = new Insets(0, 0, 5, 0);
 			gbc_acceptSegmentBtn.gridx = 5;
-			gbc_acceptSegmentBtn.gridy = 15;
+			gbc_acceptSegmentBtn.gridy = 16;
 			contentPane.add(acceptSegmentBtn, gbc_acceptSegmentBtn);
 		}
 

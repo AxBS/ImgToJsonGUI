@@ -57,6 +57,9 @@ public class Segment implements Serializable{
 	//List of Steps
 	private List<Step> steps;
 
+	//Road code
+	private String roadCode;
+
 
 
 	/**
@@ -74,19 +77,29 @@ public class Segment implements Serializable{
 		this.pkIni = "";
 		this.direction = "";
 		this.twinSegments = new ArrayList<String>();
+		this.roadCode = "";
 
 	}
 
 	/**
 	 * Constructor. 
-	 *
+	 * @param  id String to identificate the {@link Segment}.
 	 * @param  origin {@link Intersection} where this {@link Segment} starts.
 	 * @param  destination {@link Intersection} where this {@link Segment} ends.
 	 * @param  length The length of this {@link Segment} in Km.
+	 * @param  maxSpeed Velocidad máxima de en la que se puede transitar por la via.
+	 * @param  capacity Número de coches que caben dentro del segmento.
+	 * @param density Cantidad de coche por Km.
+	 * @param numberTracks Número de carriles que tiene el segmento.
+	 * @param direction Sentido de la vía (Ascendente - up o Descendente - down)
+	 * @param pkstart Punto kilométrico de inicio
+	 * @param segTwinsList Lista de segmentos gemelos
+	 * @param roadCode Código de la carreta por la que transcurre el segmento
 	 */
 	public Segment(String id, String origin, String destination, 
 			String length, String maxSpeed, String capacity, String density, 
-			String numberTracks, String direction, String pkstart, ArrayList<String> segTwinsList){
+			String numberTracks, String direction, String pkstart, ArrayList<String> segTwinsList,
+				   String roadCode){
 
 		this.id = id;
 		this.origin = origin;
@@ -99,43 +112,61 @@ public class Segment implements Serializable{
 		this.direction = direction;
 		this.pkIni =  pkstart;
 		this.twinSegments = segTwinsList;
+		this.roadCode = roadCode;
 		
 	}
 
  
-	//Setters and getters
+	/**Getter para obtener el id del segmento
+	 * @return String con el identificador*/
 	public String getId() {
 		return id;
 	}
 
+	/**Getter para obtener el id de la intersección de origen
+	 * @return String con el id de la intersección origen*/
 	public String getOrigin() {
 		return origin;
 	}
 
+	/**Getter para obtener el id de la intersección de destino
+	 * @return String con el id de la intersección destino*/
 	public String getDestination() {
 		return destination;
 	}
 
+	/**Getter para obtener la longitud del segmento
+	 * @return String que representa la longitud aunque en realidad es un flotante*/
 	public String getLength() {
 		return length;
 	}
 
+	/**Getter para obter la capacidad del segmento
+	 * @return String que representa la capacidad aunque en realidad es un int*/
 	public String getCapacity() {
 		return capacity;
 	}
 
+	/**Getter para obtener el número de carriles del segmento
+	 * @return String que representa el número de carriles aunque en realida en un int*/
 	public String getNumberTracks() {
 		return numberTracks;
 	}
 
+	/**Getter para obtener la lista de steps del segmento
+	 * @return Lista de {@link Step}*/
 	public List<Step> getSteps() {
 		return steps;
 	}
 
+	/**Setter de la lista de {@link Step}
+	 * @param steps Lista de {@link Step} */
 	public void setSteps(List<Step> steps) {
 		this.steps = steps;
 	}
-	
+
+	/**Añadir un {@link Step}
+	 * @param step Step que se añadirá a la lista*/
 	public void addStep(Step step) {
 		this.steps.add(step);
 	}
@@ -209,11 +240,20 @@ public class Segment implements Serializable{
 		this.twinSegments.add(twinSegment);
 	}
 
+	public String getRoadCode() {
+		return roadCode;
+	}
+
+	public void setRoadCode(String roadCode) {
+		this.roadCode = roadCode;
+	}
+
 	@Override
 	public String toString() {
 		return "Segment [id=" + id + ", origin=" + origin + ", destination=" + destination + ", length=" + length
 				+ ", capacity=" + capacity + ", density=" + density + ", numberTracks=" + numberTracks + ", maxSpeed="
-				+ maxSpeed + ", pkIni=" + pkIni + ", direction=" + direction + ", twinSegments=" + twinSegments + "]";
+				+ maxSpeed + ", pkIni=" + pkIni + ", direction=" + direction + ", twinSegments=" + twinSegments
+				+ ", roadCode=" + roadCode + "]";
 	}
 	
 	public String toJSon() {
@@ -231,6 +271,7 @@ public class Segment implements Serializable{
 		segmentJson.put("twins", twinSegments);
 		segmentJson.put("direction", direction);
 		segmentJson.put("pkstart", pkIni);
+		segmentJson.put("roadCode", roadCode);
 
 		//return "{\"id\":\""+id+"\",\"origin\":\""+origin+"\",\"destination\":\""+destination+"\",\"length\":\""+length+"\",\"maxSpeed\":\""+120+"\",\"capacity\":\""+capacity+"\",\"density\":\""+density+"\",\"numberTracks\":\""+numberTracks+"\", \"twins\":[\""+twinSegments+"\"], \"direction\":\""+direction+"\", \"pkstart\": \""+pkIni+"\"}";
 		return segmentJson.toString();
@@ -253,6 +294,7 @@ public class Segment implements Serializable{
 		}
 		this.setDirection(segmentJson.getString("direction"));
 		this.setPkIni(segmentJson.getString("pkstart"));
+		this.setRoadCode(segmentJson.getString("roadCode"));
 	}
 	
 }
